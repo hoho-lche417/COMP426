@@ -1,0 +1,29 @@
+.box {
+    display: flex;
+    flex-direction: row;
+}
+
+.side {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+
+    box-sizing: border-box;
+    width: 33%;
+    height: 500px;
+}
+
+.middle {
+
+    width: 34%;
+    height: 500px;
+}
+
+.cell {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+
+    box-sizing: border-box;
+    height: 20%;
+}

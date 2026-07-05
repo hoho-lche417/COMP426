@@ -1,5 +1,5 @@
 # Use the latest official Node.js image
-FROM node:latest
+FROM node:20-bookworm
 
 # Install useful system utilities
 ENV TZ=America/New_York

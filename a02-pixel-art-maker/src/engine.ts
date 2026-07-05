@@ -81,6 +81,7 @@ export class PixelArtMakerEngine {
     } else if (this.activeTool == DrawingTool.Eraser) {
       this._canvas[r][c] = this.blankCellColor(r, c);
     }
+    this.saveCanvas();
   }
 
   // TODO: Implement the `clearCanvas` method below.
@@ -98,6 +99,7 @@ export class PixelArtMakerEngine {
         this._canvas[r][c] = this.blankCellColor(r, c);
       }
     }
+    this.saveCanvas();
   }
 
   /** Downloads the currently drawn canvas as a PNG file */

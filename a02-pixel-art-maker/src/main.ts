@@ -61,18 +61,16 @@ syncCanvasWithEngine();
 
 // TODO: Through creating event handlers, correctly toggle `isMouseDown` to
 //       represent the state of whether the mouse is pressed down or not!
-console.log('load');
+
 document.addEventListener("mousedown", 
   function() {
     isMouseDown = true;
-    //console.log("mousedown");
   }
 )
 
 document.addEventListener("mouseup", 
   function() {
     isMouseDown = false;
-    //console.log("mouseup");
   }
 )
 
@@ -93,10 +91,8 @@ document.addEventListener("mouseup",
 for (let r = 0; r < 16; ++r) {
   for (let c = 0; c < 16; ++c) {
     let cellId = "r" + r.toString() + "_c" + c.toString();
-    //let cell = document.getElementById(cellId);
     document.getElementById(cellId)!.addEventListener("mousedown",
       function(event) {
-        //console.log(event.currentTarget);
         engine.paintCell(r, c);
         syncCanvasWithEngine();
         (event.currentTarget as HTMLElement).removeChild(cellCursor);
@@ -105,7 +101,6 @@ for (let r = 0; r < 16; ++r) {
 
     document.getElementById(cellId)!.addEventListener("mouseup",
       function(event) {
-        //console.log(event.currentTarget);
         (event.currentTarget as HTMLElement).appendChild(cellCursor);
       }
     )
@@ -146,8 +141,6 @@ for (let r = 0; r < 16; ++r) {
 
 document.getElementById("color-picker")!.addEventListener("change",
   function(event) {
-    console.log("color changed!");
-    //console.log(event.currentTarget.value);
     engine.activeColor = (event.currentTarget as HTMLInputElement).value;
     document.getElementById("color-icon")!.style.color = engine.activeColor;
   }
@@ -201,7 +194,6 @@ document.getElementById("eraser")!.addEventListener("click",
 
 document.getElementById("save")!.addEventListener("click",
   function() {
-    console.log("save clicked!");
     engine.downloadImageFromCanvas();
   }
 )
@@ -215,7 +207,6 @@ document.getElementById("save")!.addEventListener("click",
 
 document.getElementById("clear")!.addEventListener("click",
   function() {
-    console.log("clear clicked!");
     window.alert("Press OK to proceed!");
     engine.clearCanvas();
     syncCanvasWithEngine();

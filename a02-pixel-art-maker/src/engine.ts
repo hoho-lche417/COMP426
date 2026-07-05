@@ -70,6 +70,17 @@ export class PixelArtMakerEngine {
    */
   paintCell(r: number, c: number): void {
     /* Your implementation here */
+    if (this.activeTool === DrawingTool.Pencil) {
+      this._canvas[r][c] = this.activeColor;
+    } else if (this.activeTool === DrawingTool.Bucket) {
+      for (let i = 0; i < 16; i++) {
+        for (let j = 0; j < 16; j++) {
+          this._canvas[i][j] = this.activeColor;
+        }
+      }
+    } else if (this.activeTool == DrawingTool.Eraser) {
+      this._canvas[r][c] = this.blankCellColor(r, c);
+    }
   }
 
   // TODO: Implement the `clearCanvas` method below.
@@ -82,6 +93,11 @@ export class PixelArtMakerEngine {
   /** Clears the canvas back to its default colors, then saves the canvas. */
   clearCanvas(): void {
     /* Your implementation here */
+    for (let r = 0; r < 16; r++) {
+      for (let c = 0; c < 16; c++) {
+        this._canvas[r][c] = this.blankCellColor(r, c);
+      }
+    }
   }
 
   /** Downloads the currently drawn canvas as a PNG file */

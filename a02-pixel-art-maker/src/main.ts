@@ -47,8 +47,9 @@ cellCursor.style.height = "100%";
 const syncCanvasWithEngine = () => {
   /* Your implementation here */
   for (let r = 0; r < 16; ++r) {
-    for (let c = 0; c < 16; ++r) {
+    for (let c = 0; c < 16; ++c) {
       let cellId = "r" + r.toString() + "_c" + c.toString();
+      //console.log(cellId);
       let cell = document.getElementById(cellId);
       cell!.style.backgroundColor = engine.canvas[r][c];
     }
@@ -60,8 +61,20 @@ syncCanvasWithEngine();
 
 // TODO: Through creating event handlers, correctly toggle `isMouseDown` to
 //       represent the state of whether the mouse is pressed down or not!
+console.log('load');
+document.addEventListener("mousedown", 
+  function() {
+    isMouseDown = true;
+    //console.log("mousedown");
+  }
+)
 
-/* . . . */
+document.addEventListener("mouseup", 
+  function() {
+    isMouseDown = false;
+    //console.log("mouseup");
+  }
+)
 
 // TODO: Create the correct event handlers to handle the user clicking on
 //       **or dragging *through* ** each cell to paint on the canvas!
@@ -77,7 +90,28 @@ syncCanvasWithEngine();
 //         to paint all of them! It will be up to you to find the correct
 //         combination of event handlers to implement this functionality.
 
-/* . . . */
+for (let r = 0; r < 16; ++r) {
+  for (let c = 0; c < 16; ++c) {
+    let cellId = "r" + r.toString() + "_c" + c.toString();
+    //let cell = document.getElementById(cellId);
+    document.getElementById(cellId)!.addEventListener("mousedown",
+      function() {
+        //console.log(event.currentTarget);
+        engine.paintCell(r, c);
+        syncCanvasWithEngine();
+      }
+    )
+
+    document.getElementById(cellId)!.addEventListener("mouseenter",
+      function() {
+        if (isMouseDown) {
+          engine.paintCell(r, c);
+          syncCanvasWithEngine();
+        }
+      }
+    )
+  }
+}
 
 // TODO: Create the correct event handler to change the selected color once
 //       the user picks a new color. Then, change the color icon to reflect
@@ -92,7 +126,14 @@ syncCanvasWithEngine();
 //       `value`, that is because of a TypeScript quirk. This error would
 //       disappear if you first cast: (event.target as HTMLInputElement)
 
-/* . . . */
+document.getElementById("color-picker")!.addEventListener("change",
+  function(event) {
+    console.log("color changed!");
+    //console.log(event.currentTarget.value);
+    engine.activeColor = (event.currentTarget as HTMLInputElement).value;
+    document.getElementById("color-icon")!.style.color = engine.activeColor;
+  }
+)
 
 // TODO: Create the correct event handlers to change the engine's active tool
 //       to the pencil, bucket, or eraser when these buttons are pressed!
@@ -106,13 +147,37 @@ syncCanvasWithEngine();
 //       Selected background color:     "#f2f2f2"
 //       Not selected background color: "#ffffff" (white)
 
-/* . . . */
+document.getElementById("pencil")!.addEventListener("click",
+  function() {
+    console.log("pencil clicked!");
+    engine.activeTool = DrawingTool.Pencil;
+  }
+)
+
+document.getElementById("bucket")!.addEventListener("click",
+  function() {
+    console.log("bucket clicked!");
+    engine.activeTool = DrawingTool.Bucket;
+  }
+)
+
+document.getElementById("eraser")!.addEventListener("click",
+  function() {
+    console.log("eraser clicked!");
+    engine.activeTool = DrawingTool.Eraser;
+  }
+)
 
 // TODO: Create the correct event handler to download the current image when
 //       the "save" / download button is pressed. Use a similar method to above
 //       to find which element you need to work with here.
 
-/* . . . */
+document.getElementById("save")!.addEventListener("click",
+  function() {
+    console.log("save clicked!");
+    engine.downloadImageFromCanvas();
+  }
+)
 
 // TODO: Create the correct event handler to *show a confirmation alert* prompting
 //       the user when the user presses the "clear" image button. If the user pressed
@@ -121,7 +186,14 @@ syncCanvasWithEngine();
 // NOTE: For more information on how to show alerts, check out this resource:
 //       https://www.w3schools.com/js/js_popup.asp
 
-/* . . . */
+document.getElementById("clear")!.addEventListener("click",
+  function() {
+    console.log("clear clicked!");
+    window.alert("Press OK to proceed!");
+    engine.clearCanvas();
+    syncCanvasWithEngine();
+  }
+)
 
 // TODO: Finally, you want to make use of the reference to the `cellCursor` HTML element.
 //       You want this cursor to appear in the cell that the user is currently hovering

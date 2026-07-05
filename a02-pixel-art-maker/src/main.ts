@@ -46,6 +46,13 @@ cellCursor.style.height = "100%";
  */
 const syncCanvasWithEngine = () => {
   /* Your implementation here */
+  for (let r = 0; r < 16; ++r) {
+    for (let c = 0; c < 16; ++r) {
+      let cellId = "r" + r.toString() + "_c" + c.toString();
+      let cell = document.getElementById(cellId);
+      cell!.style.backgroundColor = engine.canvas[r][c];
+    }
+  }
 };
 
 // Syncs the canvas at the start.

@@ -95,18 +95,36 @@ for (let r = 0; r < 16; ++r) {
     let cellId = "r" + r.toString() + "_c" + c.toString();
     //let cell = document.getElementById(cellId);
     document.getElementById(cellId)!.addEventListener("mousedown",
-      function() {
+      function(event) {
         //console.log(event.currentTarget);
         engine.paintCell(r, c);
         syncCanvasWithEngine();
+        (event.currentTarget as HTMLElement).removeChild(cellCursor);
+      }
+    )
+
+    document.getElementById(cellId)!.addEventListener("mouseup",
+      function(event) {
+        //console.log(event.currentTarget);
+        (event.currentTarget as HTMLElement).appendChild(cellCursor);
       }
     )
 
     document.getElementById(cellId)!.addEventListener("mouseenter",
-      function() {
+      function(event) {
         if (isMouseDown) {
           engine.paintCell(r, c);
           syncCanvasWithEngine();
+        } else {
+          (event.currentTarget as HTMLElement).appendChild(cellCursor);
+        }
+      }
+    )
+
+    document.getElementById(cellId)!.addEventListener("mouseleave",
+      function(event) {
+        if (!isMouseDown) {
+          (event.currentTarget as HTMLElement).removeChild(cellCursor);
         }
       }
     )
@@ -151,6 +169,9 @@ document.getElementById("pencil")!.addEventListener("click",
   function() {
     console.log("pencil clicked!");
     engine.activeTool = DrawingTool.Pencil;
+    document.getElementById("pencil")!.style.backgroundColor = "#f2f2f2";
+    document.getElementById("bucket")!.style.backgroundColor = "#ffffff";
+    document.getElementById("eraser")!.style.backgroundColor = "#ffffff";
   }
 )
 
@@ -158,6 +179,9 @@ document.getElementById("bucket")!.addEventListener("click",
   function() {
     console.log("bucket clicked!");
     engine.activeTool = DrawingTool.Bucket;
+    document.getElementById("pencil")!.style.backgroundColor = "#ffffff";
+    document.getElementById("bucket")!.style.backgroundColor = "#f2f2f2";
+    document.getElementById("eraser")!.style.backgroundColor = "#ffffff";
   }
 )
 
@@ -165,6 +189,9 @@ document.getElementById("eraser")!.addEventListener("click",
   function() {
     console.log("eraser clicked!");
     engine.activeTool = DrawingTool.Eraser;
+    document.getElementById("pencil")!.style.backgroundColor = "#ffffff";
+    document.getElementById("bucket")!.style.backgroundColor = "#ffffff";
+    document.getElementById("eraser")!.style.backgroundColor = "#f2f2f2";
   }
 )
 

@@ -69,7 +69,7 @@ export default function Tile({ letter, state }: TileProps) {
         moreStyle,
       )}
     >
-      A
+      {""}
     </div>
   );
 }

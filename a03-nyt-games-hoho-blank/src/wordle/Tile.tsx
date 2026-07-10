@@ -1,5 +1,4 @@
 /**
- * TODO
  * This file specifies the component for a single tile on the Wordle game grid.
  *
  * You will be implementing this component from scratch. You will also be styling
@@ -7,6 +6,9 @@
  *
  * First, note the `TileState` enum below:
  */
+
+import { CopyMinus } from "lucide-react";
+import { cn } from "../utils/cn";
 
 export enum TileState {
   Default, // This tile is either empty or contains a letter that has not been guessed yet (white background)
@@ -26,7 +28,7 @@ export enum TileState {
  * 3. The tile should be a flexbox.
  * 4. The text inside of the tile should be centered both horizontally and vertically.
  * 5. The text inside of the tile should be Tailwind size 2xl and bold.
- * 6. The text insite of the tile should not be selectable!
+ * 6. The text inside of the tile should not be selectable!
  *    (Hint: https://tailwindcss.com/docs/user-select)
  *
  * Finally, the rest of the styles should depend on the state of the tile and the letter:
@@ -48,6 +50,26 @@ export enum TileState {
 type TileProps = { letter: string | null; state: TileState };
 
 export default function Tile({ letter, state }: TileProps) {
-  console.log(letter, state); // You should remove this - added here to prevent destructuring err
-  return <p>TODO: Make Tiles!</p>;
+  let moreStyle: string = ""; // additional css style based on the tile state
+
+  if (state === TileState.Correct) {
+    moreStyle = "text-white border-wordle-green bg-wordle-green";
+  } else if (state == TileState.PartiallyCorrect) {
+    moreStyle = "text-white border-wordle-yellow bg-wordle-yellow";
+  } else if (state == TileState.Incorrect) {
+    moreStyle = "text-white border-gray-500 bg-gray-500";
+  } else if (state == TileState.Default) {
+    moreStyle = "text-black border-gray-" + (letter !== null? "500" : "300");
+  }
+
+  return (
+    <div 
+      className={cn(
+        "w-14 h-14 border-2 flex items-center justify-center text-2xl font-bold select-none",
+        moreStyle,
+      )}
+    >
+      A
+    </div>
+  );
 }

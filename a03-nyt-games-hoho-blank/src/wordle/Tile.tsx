@@ -50,6 +50,7 @@ export enum TileState {
 type TileProps = { letter: string | null; state: TileState };
 
 export default function Tile({ letter, state }: TileProps) {
+  console.log(letter + " with " + state);
   let moreStyle: string = ""; // additional css style based on the tile state
 
   if (state === TileState.Correct) {
@@ -68,8 +69,7 @@ export default function Tile({ letter, state }: TileProps) {
         "w-14 h-14 border-2 flex items-center justify-center text-2xl font-bold select-none",
         moreStyle,
       )}
-    >
-      {letter}
+    >{letter}
     </div>
   );
 }

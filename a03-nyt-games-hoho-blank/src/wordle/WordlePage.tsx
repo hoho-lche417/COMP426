@@ -49,7 +49,20 @@ export default function WordlePage() {
    * Therefore, you will need to use the `useEffect` hook.
    */
 
-  // YOUR IMPLEMENTATION HERE
+  useEffect(() => {
+    // Declare the async function inside the effect
+    async function fetchTargetWord(): Promise<void> {
+      await fetch("https://comp426-apis.vercel.app/api/wordle/random-word")
+        .then((response) => response.json())
+        .then((data) => {
+            setTargetWord(data.word!);
+        });
+    };
+
+    fetchTargetWord(); // Invoke it immediately
+  }, []);
+  
+  
 
   /**
    * EXTRA CREDIT: In the real Wordle game, you can type on your keyboard to
@@ -69,7 +82,7 @@ export default function WordlePage() {
   // YOUR IMPLEMENTATION HERE
 
   /**
-   * TODO:  The <Keyboard> requires a handler for when a letter is pressed.
+   * The <Keyboard> requires a handler for when a letter is pressed.
    * This is required so that the keyboard can update the current guess.
    *
    * Implement this function to update the current guess with `letter`.
@@ -78,17 +91,25 @@ export default function WordlePage() {
    *
    * @param letter The letter that was pressed.
    */
-  const onKeyPress = (letter: string) => {};
+  const onKeyPress = (letter: string) => {
+    if (currentGuess.length < 5) {
+      setCurrentGuess(currentGuess + letter);
+    }
+  };
 
   /**
-   * TODO: The <Keyboard> requires a handler for when the backspace key is pressed.
+   * The <Keyboard> requires a handler for when the backspace key is pressed.
    * This is required so that the keyboard can backspace the current guess.
    *
    * Implement this function.
    *
    * Add validation to ensure that nothing happens when the current guess is already empty.
    */
-  const onBackspace = () => {};
+  const onBackspace = () => {
+    if (currentGuess.length > 0) {
+      setCurrentGuess(currentGuess.substring(0, currentGuess.length - 1));
+    }
+  };
 
   /**
    * TODO: We need to ensure that guesses that the user makes are valid five letter words.
@@ -106,7 +127,15 @@ export default function WordlePage() {
    * @param guess The guess to check.
    * @returns true if the guess is valid, false otherwise.
    */
-  const checkGuessValidity = async (guess: string) => {};
+  const checkGuessValidity = async (guess: string) => {
+    let isValid: boolean = false;
+    await fetch("https://comp426-apis.vercel.app/api/wordle/word-validator/" + currentGuess)
+      .then((response) => response.json())
+      .then((data) => {
+          isValid = data.valid!;
+      });
+    return isValid;
+  };
 
   // Custom hook that abstracts functionality for showing toasts on the screen.
   //
@@ -143,7 +172,34 @@ export default function WordlePage() {
    * 5. If the current guess is equal to the target word, end the game by updating the
    *   game status to 'won' after a 2000ms delay.
    */
-  const makeGuess = async () => {};
+  const makeGuess = async () => {
+    if (currentGuess.length < 5) {
+      showToast("Please enter a 5-letter word!");
+      return;
+    }
+
+    if (currentGuess === targetWord) {
+      setTimeout(() => {setGameStatus("won")}, 2000);
+      return; 
+    }
+
+    let isValid = await checkGuessValidity(currentGuess);
+    if (!isValid) {
+      showToast("This is not a valid word!");
+      return;
+    } else {
+      setPastGuesses([...pastGuesses, currentGuess]);
+      setCurrentGuess("");
+      setActiveRow(activeRow + 1);
+    }
+
+    if (activeRow >= 5) {
+      setTimeout(() => {setGameStatus("lost")}, 2000);
+      return; 
+    }
+
+  };
+  
 
   return (
     <div className="flex h-svh max-h-svh w-full flex-col items-center overflow-hidden">

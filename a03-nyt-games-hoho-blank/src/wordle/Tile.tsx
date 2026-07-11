@@ -50,7 +50,7 @@ export enum TileState {
 type TileProps = { letter: string | null; state: TileState };
 
 export default function Tile({ letter, state }: TileProps) {
-  console.log(letter + " with " + state);
+  //console.log(letter + " with " + state);
   let moreStyle: string = ""; // additional css style based on the tile state
 
   if (state === TileState.Correct) {

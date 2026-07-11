@@ -36,7 +36,7 @@ export default function WordlePage() {
   const [activeRow, setActiveRow] = useState<number>(0);
 
   /**
-   * TODO: Load the target word from an external API.
+   * Load the target word from an external API.
    *
    * As noted in the assignment reading, you can use the following
    * API call to get a random 5-letter word:
@@ -79,7 +79,25 @@ export default function WordlePage() {
    * HINT: You can add event handlers to the `window` to apply a global event handler!
    */
 
-  // YOUR IMPLEMENTATION HERE
+  useEffect(() => {
+    let handleKeyUp = (event) => {
+      //console.log("within handler for key up: " + event.key.toUpperCase());
+      if (event.key === "Enter") {
+        makeGuess();
+      } else if (event.key === "Backspace") {
+        onBackspace();
+      } else {
+        onKeyPress(event.key.toUpperCase());
+      }
+    }
+    
+    //document.addEventListener("keyup", handleKeyUp);
+    document.onkeyup = handleKeyUp;
+
+    return () => {
+      document.removeEventListener("keyup", handleKeyUp);
+    }
+  });
 
   /**
    * The <Keyboard> requires a handler for when a letter is pressed.
@@ -92,9 +110,12 @@ export default function WordlePage() {
    * @param letter The letter that was pressed.
    */
   const onKeyPress = (letter: string) => {
+    // console.log("on key press: " + letter);
+    // console.log("currentGuess.length: " + currentGuess.length);
     if (currentGuess.length < 5) {
-      setCurrentGuess(currentGuess + letter);
+      setCurrentGuess(currentGuess => currentGuess + letter);
     }
+    //console.log("currentGuess: " + currentGuess);
   };
 
   /**
@@ -112,7 +133,7 @@ export default function WordlePage() {
   };
 
   /**
-   * TODO: We need to ensure that guesses that the user makes are valid five letter words.
+   * We need to ensure that guesses that the user makes are valid five letter words.
    * For example, we would not want the user to be able to guess `ASDFG`. The real
    * Wordle also handles this validation.
    *
@@ -151,7 +172,7 @@ export default function WordlePage() {
   const { showToast, isVisible, message } = useToast();
 
   /**
-   * TODO: The main functionality for this component is to handle when the user
+   * The main functionality for this component is to handle when the user
    * submits guess. This happens when the user presses the "Enter" key. This
    * function must do the following things:
    *
@@ -197,9 +218,9 @@ export default function WordlePage() {
       setActiveRow(activeRow + 1);
     }
 
-    console.log("pastGuesses: " + pastGuesses);
-    console.log("currentGuess: " + currentGuess);
-    console.log("activeRow: " + activeRow);
+    // console.log("pastGuesses: " + pastGuesses);
+    // console.log("currentGuess: " + currentGuess);
+    // console.log("activeRow: " + activeRow);
 
     if (activeRow >= 5) {
       setTimeout(() => {setGameStatus("lost")}, 2000);

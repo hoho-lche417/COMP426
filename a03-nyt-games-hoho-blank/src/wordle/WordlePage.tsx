@@ -188,10 +188,18 @@ export default function WordlePage() {
       showToast("This is not a valid word!");
       return;
     } else {
-      setPastGuesses([...pastGuesses, currentGuess]);
+      let updatedPastGuesses: string[];
+      updatedPastGuesses = [...pastGuesses.slice(0, activeRow), 
+        currentGuess, 
+        ...pastGuesses.slice(activeRow + 1)]
+      setPastGuesses(updatedPastGuesses);
       setCurrentGuess("");
       setActiveRow(activeRow + 1);
     }
+
+    console.log("pastGuesses: " + pastGuesses);
+    console.log("currentGuess: " + currentGuess);
+    console.log("activeRow: " + activeRow);
 
     if (activeRow >= 5) {
       setTimeout(() => {setGameStatus("lost")}, 2000);

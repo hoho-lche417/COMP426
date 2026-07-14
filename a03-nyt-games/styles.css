@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Cal+Sans&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Cal+Sans&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+    --color-wordle: #E3E3E1;
+    --color-connections: #B2A8F9;
+    --color-wordle-yellow: #C5B566;
+    --color-wordle-green: #79A86B;
+    --color-connections-default-tile: #EFEFE7;
+    --color-connections-selected-tile: #5A594F;
+    --color-connections-green: #A7C268;
+    --color-connections-yellow: #F5E07E;
+    --color-connections-blue: #B4C3EB;
+    --color-connections-purple: #B283C1;
+    --font-nyt-heading: "Bree Serif", sans-serif; 
+    --font-nyt-body: "Libre Franklin", sans-serif; 
+  }
+
+/* Shake animation for incorrect answers */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.7s ease-in-out;
+}
